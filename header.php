@@ -1,13 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Demos Archive - NiDE.GG</title>
 <link rel="Shortcut Icon" href="favicon.ico" />
 <link href="style/css.php" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="https://kit.fontawesome.com/f29912deb4.js" crossorigin="anonymous"></script>
-
+</head>
+<body>
 
 <div class='header'>
 <a href="https://demos.nide.gg/" title="Demo Archive NiDE.GG">
-	<img src="https://demos.nide.gg/style/img/demos_archive_2024.png">
+	<img src="https://demos.nide.gg/style/img/demos_archive_2024.png" alt="Demos Archive NiDE.GG">
 </a>
 </div>
 <div class='navbar'>
@@ -25,31 +31,67 @@
     </div>
 </div>
 <div class='subbar'>
-	<div class='item changeServ' id='css_ze'>CS:S Zombie Escape</div>
-	<div class='item changeServ' id='css_zr'>CS:S Zombie Revival</div>
-	<!--<div class='item changeServ' id='csgo_ze'>CSGO : Zombie Escape</div>-->
+	<?php
+	$allowedServers = DemoSecurity::getAllowedServers();
+	foreach ($allowedServers as $serverId => $serverInfo): ?>
+		<div class='item changeServ' data-server='<?php echo DemoSecurity::escapeHtml($serverId); ?>'><?php echo DemoSecurity::escapeHtml($serverInfo['name']); ?></div>
+	<?php endforeach; ?>
 </div>
 
 <script>
-$(".changeServ").click(function(event)
-{
-	$('.changeServ').removeAttr('style');
-	$(this).css('background', 'linear-gradient(to left, rgb(0,0,0,0), rgb(0,0,0,.35)), #ff4700 !important');
+$(document).ready(function() {
+    // CSRF protection - generate token
+    var csrfToken = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
-	var container = document.getElementById("server");
-	var req = new XMLHttpRequest();
-    
-    datas = 'server=' + $(this).attr('id');
-    req.onreadystatechange = function()
-    {
-        if(req.readyState == 4 && req.status == 200)
-        {
-            container.innerHTML = req.responseText;
+    $(".changeServ").click(function(event) {
+        event.preventDefault();
+
+        // Remove active class and styles from all server buttons
+        $('.changeServ').removeClass('active').removeAttr('style');
+
+        // Add active class to clicked button
+        $(this).addClass('active');
+
+        var container = document.getElementById("server");
+        var serverId = $(this).data('server');
+
+        // Validate server ID on client side
+        var allowedServers = ['css_ze', 'css_zr'];
+        if (allowedServers.indexOf(serverId) === -1) {
+            container.innerHTML = '<div class="error">Invalid server selected</div>';
+            return;
         }
-    }
 
-    req.open("POST", "<?php echo SITE_URL ?>pages/server.php");
-    req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    req.send(datas);
+        var req = new XMLHttpRequest();
+
+        var formData = new FormData();
+        formData.append('server', serverId);
+        formData.append('csrf_token', csrfToken);
+
+        req.onreadystatechange = function() {
+            if (req.readyState == 4) {
+                // Remove loading state
+                container.classList.remove('loading');
+
+                if (req.status == 200) {
+                    container.innerHTML = req.responseText;
+                } else {
+                    container.innerHTML = '<div class="error">Error loading demos</div>';
+                }
+            }
+        }
+
+        // Add loading state
+        container.classList.add('loading');
+        container.innerHTML = '<div style="text-align: center; padding: 50px;">Loading demos...</div>';
+
+        req.open("POST", "<?php echo DemoSecurity::escapeHtml(SITE_URL); ?>pages/server.php");
+        req.send(formData);
+    });
+
+    // Auto-select first server on page load
+    if ($(".changeServ").length > 0) {
+        $(".changeServ").first().click();
+    }
 });
 </script>

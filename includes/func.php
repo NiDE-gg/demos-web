@@ -44,7 +44,7 @@ function setSecurityHeaders()
     header('X-XSS-Protection: 1; mode=block');
 
     // Content Security Policy
-    header("Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://code.jquery.com https://kit.fontawesome.com; style-src 'self' 'unsafe-inline' https://kit.fontawesome.com https://ka-f.fontawesome.com; img-src 'self' https://demos.nide.gg; font-src 'self' https://kit.fontawesome.com https://ka-f.fontawesome.com; connect-src 'self' https://ka-f.fontawesome.com;");
+    header("Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://code.jquery.com https://kit.fontawesome.com; style-src 'self' 'unsafe-inline' https://kit.fontawesome.com https://ka-f.fontawesome.com https://fonts.googleapis.com; img-src 'self' https://demos.nide.gg; font-src 'self' https://kit.fontawesome.com https://ka-f.fontawesome.com https://fonts.gstatic.com; connect-src 'self' https://ka-f.fontawesome.com;");
 
     // HSTS for HTTPS
     if (strpos(SITE_URL, 'https://') === 0) {

@@ -81,9 +81,11 @@ usort($demos, function($a, $b) {
 			$map = $matches[7];
 
 			$date = "$day.$month.$year @ $hour:$minute";
+			$timestamp = mktime((int)$hour, (int)$minute, (int)$second, (int)$month, (int)$day, (int)$year);
 		} else {
 			// Fallback for unexpected filename format
 			$date = date('d.m.Y @ H:i', $demoInfo['mtime']);
+			$timestamp = (int)$demoInfo['mtime'];
 			$map = 'Unknown';
 		}
 
@@ -96,7 +98,7 @@ usort($demos, function($a, $b) {
 
 		echo "<tr>";
 			echo "<td>" . DemoSecurity::escapeHtml($map) . "</td>";
-			echo "<td>" . DemoSecurity::escapeHtml($date) . "</td>";
+			echo "<td><div class='demo-date' data-system-date='" . DemoSecurity::escapeHtml($date) . "' data-timestamp='" . (int)$timestamp . "'><span class='system-time'>" . DemoSecurity::escapeHtml($date) . "</span><span class='local-time hidden'></span></div></td>";
 			echo "<td>" . DemoSecurity::escapeHtml($demoSize) . "</td>";
 			echo "<td style='text-align: center !important'><a href='https://demos.nide.gg/" . urlencode($validatedServer) . "/demos/" . urlencode($demo) . "'><div class='button'>Download</div></a></td>";
 		echo "</tr>";
@@ -191,9 +193,11 @@ usort($demos, function($a, $b) {
 			$map = $matches[7];
 
 			$date = "$day.$month.$year @ $hour:$minute";
+			$timestamp = mktime((int)$hour, (int)$minute, (int)$second, (int)$month, (int)$day, (int)$year);
 		} else {
 			// Fallback for unexpected filename format
 			$date = date('d.m.Y @ H:i', $demoInfo['mtime']);
+			$timestamp = (int)$demoInfo['mtime'];
 			$map = 'Unknown';
 		}
 
@@ -206,7 +210,7 @@ usort($demos, function($a, $b) {
 
 		echo "<tr>";
 			echo "<td>" . DemoSecurity::escapeHtml($map) . "</td>";
-			echo "<td>" . DemoSecurity::escapeHtml($date) . "</td>";
+			echo "<td><div class='demo-date' data-system-date='" . DemoSecurity::escapeHtml($date) . "' data-timestamp='" . (int)$timestamp . "'><span class='system-time'>" . DemoSecurity::escapeHtml($date) . "</span><span class='local-time hidden'></span></div></td>";
 			echo "<td>" . DemoSecurity::escapeHtml($demoSize) . "</td>";
 			echo "<td style='text-align: center !important'><a href='https://demos.nide.gg/" . urlencode($validatedServer) . "/demos/" . urlencode($demo) . "'><div class='button'>Download</div></a></td>";
 		echo "</tr>";

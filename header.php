@@ -14,15 +14,18 @@
 <nav>
     <a href="https://demos.nide.gg/" class="nav-brand" title="Demo Archive NiDE.GG">
     <img src="https://demos.nide.gg/style/img/demos_archive_2024.png" alt="Demos Archive NiDE.GG" style="width: 50%;">
+    <!-- <div class="brand-icon"></div>
+        Demo Archive NiDE.GG
+    </a> -->
     <div class="nav-links">
         <a href="https://nide.gg/forums/" title="Go back to Forums">FORUM</a>
         <a href="https://discord.nide.gg/" target="_blank" rel="noopener" title="Discord">DISCORD</a>
-		<a href="https://steamcommunity.com/groups/nide_css/" target="_blank" rel="noopener" title="Steam group">STEAM</a>
+        <a href="https://steamcommunity.com/groups/nide_css/" target="_blank" rel="noopener" title="Steam group">STEAM</a>
         <a href="https://stats.nide.gg/" target="_blank" rel="noopener" title="HLStatsX">STATS</a>
         <a href="https://demos.nide.gg/" class="active" title="Demos Archive">DEMOS</a>
         <a href="https://bans.nide.gg/" target="_blank" rel="noopener" title="Sourcebans">BANS</a>
-		<a href="https://ebans.nide.gg/" target="_blank" rel="noopener" title="EntWatch bans">EBANS</a>
-		<a href="https://kbans.nide.gg/" target="_blank" rel="noopener" title="KbRestrict bans">KBANS</a>
+        <a href="https://ebans.nide.gg/" target="_blank" rel="noopener" title="EntWatch bans">EBANS</a>
+        <a href="https://kbans.nide.gg/" target="_blank" rel="noopener" title="KbRestrict bans">KBANS</a>
     </div>
 </nav>
 
@@ -64,6 +67,49 @@
 
 <script>
 $(document).ready(function() {
+    function formatLocalDate(unixTimestampSeconds) {
+        var date = new Date(unixTimestampSeconds * 1000);
+        var parts = new Intl.DateTimeFormat('en-GB', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        }).formatToParts(date);
+
+        var map = {};
+        parts.forEach(function(part) {
+            map[part.type] = part.value;
+        });
+
+        return map.day + '.' + map.month + '.' + map.year + ' @ ' + map.hour + ':' + map.minute;
+    }
+
+    function renderLocalTimes(container) {
+        var entries = container.querySelectorAll('.demo-date');
+        entries.forEach(function(entry) {
+            var systemDate = entry.getAttribute('data-system-date') || '';
+            var timestamp = parseInt(entry.getAttribute('data-timestamp') || '0', 10);
+            if (!timestamp) {
+                return;
+            }
+
+            var localDate = formatLocalDate(timestamp);
+            if (localDate === systemDate) {
+                return;
+            }
+
+            var localSpan = entry.querySelector('.local-time');
+            if (!localSpan) {
+                return;
+            }
+
+            localSpan.textContent = 'Local: ' + localDate;
+            localSpan.classList.remove('hidden');
+        });
+    }
+
     // CSRF protection - generate token
     var csrfToken = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
@@ -99,6 +145,7 @@ $(document).ready(function() {
 
                 if (req.status == 200) {
                     container.innerHTML = req.responseText;
+                    renderLocalTimes(container);
                     // Add animation class and show the demos container
                     container.classList.add('show');
                 } else {
@@ -119,8 +166,8 @@ $(document).ready(function() {
 
     // Auto-select first server on page load if desired
     // Uncomment the next 3 lines if you want auto-selection
-    if ($(".changeServ").length > 0) {
-        $(".changeServ").first().click();
-    }
+    // if ($(".changeServ").length > 0) {
+    //     $(".changeServ").first().click();
+    // }
 });
 </script>

@@ -776,3 +776,19 @@ footer a:hover {
     font-size: 18px;
     color: var(--text-muted);
 }
+
+.demo-date .system-time,
+.demo-date .local-time {
+  display: block;
+}
+
+.demo-date .local-time {
+  margin-top: 2px;
+  font-size: 0.85em;
+  color: #b3b8c7;
+}
+
+.hidden {
+  display: none !important;
+}
+

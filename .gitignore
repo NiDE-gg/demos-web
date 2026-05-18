@@ -1,0 +1,10 @@
+# Demo local/runtime config
+.env
+.env.*
+!.env.example
+config.php
+config.local.php
+config.private.php
+secrets.php
+*secret*.php
+*password*.php

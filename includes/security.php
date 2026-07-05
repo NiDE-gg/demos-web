@@ -50,7 +50,8 @@ class DemoSecurity
         // Only allow demo files with specific pattern
         // Support both .dem and .dem.bz2 formats
         // Pattern: auto-YYYYMMDD-HHMMSS-mapname.dem(.bz2)?
-        if (!preg_match('/^auto-\d{8}-\d{6}-[a-zA-Z0-9_\-\.]+\.dem(\.bz2)?$/', $filename)) {
+        // Map segment allows @ to support legacy recorder naming tokens.
+        if (!preg_match('/^auto-\d{8}-\d{6}-[a-zA-Z0-9_\-\.@]+\.dem(\.bz2)?$/', $filename)) {
             return false;
         }
 

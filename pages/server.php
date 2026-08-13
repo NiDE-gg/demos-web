@@ -1,6 +1,7 @@
 <?php
 include_once('../includes/func.php');
 include_once('../includes/security.php');
+include_once('../includes/downloads.php');
 
 // Validate and sanitize server input
 $server = $_POST['server'] ?? '';
@@ -43,6 +44,11 @@ if ($handle = opendir($demoPath)) {
 usort($demos, function($a, $b) {
     return $b['mtime'] - $a['mtime'];
 });
+
+// Self-cleaning: drop counters for demos that no longer exist on disk
+// (the external recorder script prunes files every 7 days).
+DownloadCounter::prune($validatedServer, array_column($demos, 'filename'));
+$downloadCounts = DownloadCounter::getCounts($validatedServer);
 ?>
 <div class="demo-list-header">
     <div class="demo-col demo-col-map">Map</div>
@@ -98,7 +104,9 @@ foreach ($demos as $demoInfo) {
             echo "<span class='size-badge'>" . DemoSecurity::escapeHtml($demoSize) . "</span>";
         echo "</div>";
         echo "<div class='demo-col demo-col-action'>";
-            echo "<a href='https://demos.nide.gg/" . urlencode($validatedServer) . "/demos/" . urlencode($demo) . "'><div class='button'><i class='fas fa-download'></i> Download</div></a>";
+            $downloadCount = $downloadCounts[$demo] ?? 0;
+            echo "<a href='" . SITE_URL . "pages/download.php?server=" . urlencode($validatedServer) . "&file=" . urlencode($demo) . "'><div class='button'><i class='fas fa-download'></i> Download</div></a>";
+            echo "<span class='download-count' title='Downloads'><i class='fas fa-arrow-down'></i> " . (int)$downloadCount . "</span>";
         echo "</div>";
     echo "</div>";
 }

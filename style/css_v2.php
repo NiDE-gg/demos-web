@@ -545,6 +545,16 @@ h1 {
   gap: 6px;
 }
 
+.download-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: 8px;
+  font-size: 11px;
+  color: var(--text-muted, #888);
+  vertical-align: middle;
+}
+
 /* Button Styles */
 .button {
   background: linear-gradient(135deg, var(--accent-orange) 0%, #ff8f00 100%);

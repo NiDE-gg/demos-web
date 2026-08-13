@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NIDE.GG | Demos</title>
+<title>NiDE - Demos Archive</title>
 <link rel="Shortcut Icon" href="favicon.ico" />
 <link href="style/css_v2.php" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="https://code.jquery.com/jquery-4.0.0.min.js"></script>
@@ -13,10 +13,9 @@
 
 <nav>
     <a href="https://demos.nide.gg/" class="nav-brand" title="Demo Archive NiDE.GG">
-    <img src="https://demos.nide.gg/style/img/demos_archive_2024.png" alt="Demos Archive NiDE.GG" style="width: 50%;">
-    <!-- <div class="brand-icon"></div>
-        Demo Archive NiDE.GG
-    </a> -->
+        <img src="https://motd.nide.gg/css_ze/imgs/nide_test_nobg_back.png" alt="NiDE" class="brand-icon">
+        NiDE - Demos Archive
+    </a>
     <div class="nav-links">
         <a href="https://nide.gg/forums/" title="Go back to Forums">FORUM</a>
         <a href="https://discord.nide.gg/" target="_blank" rel="noopener" title="Discord">DISCORD</a>
@@ -62,7 +61,16 @@
         </span>
     </div>
 
-    <div id="server" class="demos-container"></div>
+    <div class="table-toolbar hidden" id="tableToolbar">
+        <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="demoSearch" placeholder="Search by map or date..." autocomplete="off">
+            <button type="button" class="search-clear" id="searchClear" title="Clear search"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="demo-count" id="demoCount"></div>
+    </div>
+
+    <div id="server" class="demos-container demo-list"></div>
 </div>
 
 <script>
@@ -110,6 +118,48 @@ $(document).ready(function() {
         });
     }
 
+    var toolbar = document.getElementById('tableToolbar');
+    var searchInput = document.getElementById('demoSearch');
+    var searchClear = document.getElementById('searchClear');
+    var demoCount = document.getElementById('demoCount');
+
+    function filterDemos() {
+        var query = (searchInput.value || '').trim().toLowerCase();
+        searchClear.classList.toggle('visible', query.length > 0);
+
+        var rows = document.querySelectorAll('#server .demo-row');
+        var visibleCount = 0;
+
+        rows.forEach(function(row) {
+            var haystack = row.getAttribute('data-search') || '';
+            var match = query === '' || haystack.indexOf(query) !== -1;
+            row.style.display = match ? '' : 'none';
+            if (match) {
+                visibleCount++;
+            }
+        });
+
+        var noResults = document.getElementById('noSearchResults');
+        if (noResults) {
+            noResults.style.display = (rows.length > 0 && visibleCount === 0) ? 'block' : 'none';
+        }
+
+        if (demoCount) {
+            if (rows.length === 0) {
+                demoCount.textContent = '';
+            } else {
+                demoCount.textContent = visibleCount + ' / ' + rows.length + ' demo' + (rows.length !== 1 ? 's' : '');
+            }
+        }
+    }
+
+    searchInput.addEventListener('input', filterDemos);
+    searchClear.addEventListener('click', function() {
+        searchInput.value = '';
+        filterDemos();
+        searchInput.focus();
+    });
+
     // CSRF protection - generate token
     var csrfToken = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
@@ -148,14 +198,22 @@ $(document).ready(function() {
                     renderLocalTimes(container);
                     // Add animation class and show the demos container
                     container.classList.add('show');
+
+                    // Reset and reveal the search toolbar for the newly loaded list
+                    searchInput.value = '';
+                    searchClear.classList.remove('visible');
+                    toolbar.classList.remove('hidden');
+                    filterDemos();
                 } else {
                     container.innerHTML = '<div class="error">Error loading demos</div>';
                     container.classList.add('show');
+                    toolbar.classList.add('hidden');
                 }
             }
         }
 
         // Add loading state
+        toolbar.classList.add('hidden');
         container.classList.add('loading');
         container.classList.remove('show');
         container.innerHTML = '<div style="text-align: center; padding: 50px; color: #888;">Loading demos...</div>';

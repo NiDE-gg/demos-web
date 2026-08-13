@@ -44,69 +44,74 @@ usort($demos, function($a, $b) {
     return $b['mtime'] - $a['mtime'];
 });
 ?>
+<div class="demo-list-header">
+    <div class="demo-col demo-col-map">Map</div>
+    <div class="demo-col demo-col-date">Date start</div>
+    <div class="demo-col demo-col-size">Size</div>
+    <div class="demo-col demo-col-action">Download</div>
+</div>
+<div class="demo-list-body">
+<?php
+foreach ($demos as $demoInfo) {
+    $demo = $demoInfo['filename'];
+    $demoPath_full = $demoPath . $demo;
 
-<table>
-	<thead>
-		<tr>
-			<th style='text-align: left'>Map</th>
-			<th style='text-align: left'>Date start</th>
-			<th style='text-align: left'>Size</th>
-			<th style='text-align: center'>Download</th>
-		</tr>
-	</thead>
-	<tbody>
+    // Get file size safely
+    $demoSizeInBytes = filesize($demoPath_full);
+    if ($demoSizeInBytes === false) {
+        continue; // Skip if file size cannot be determined
+    }
 
-	<?php
-	foreach ($demos as $demoInfo) {
-		$demo = $demoInfo['filename'];
-		$demoPath_full = $demoPath . $demo;
+    // Extract date and map from filename (format: auto-YYYYMMDD-HHMMSS-mapname.dem(.bz2)?)
+    if (preg_match('/^auto-(\d{4})(\d{2})(\d{2})-(\d{2})(\d{2})(\d{2})-(.+)\.dem(\.bz2)?$/', $demo, $matches)) {
+        $year = $matches[1];
+        $month = $matches[2];
+        $day = $matches[3];
+        $hour = $matches[4];
+        $minute = $matches[5];
+        $second = $matches[6];
+        $map = $matches[7];
 
-		// Get file size safely
-		$demoSizeInBytes = filesize($demoPath_full);
-		if ($demoSizeInBytes === false) {
-			continue; // Skip if file size cannot be determined
-		}
+        $date = "$day.$month.$year @ $hour:$minute";
+        $timestamp = mktime((int)$hour, (int)$minute, (int)$second, (int)$month, (int)$day, (int)$year);
+    } else {
+        // Fallback for unexpected filename format
+        $date = date('d.m.Y @ H:i', $demoInfo['mtime']);
+        $timestamp = (int)$demoInfo['mtime'];
+        $map = 'Unknown';
+    }
 
-		// Parse demo filename for display
-		$demoDisplay = str_replace(['auto-', '.dem'], '', $demo);
+    $demoSize = fileSizeConvert($demoSizeInBytes, 'M') . ' MiB';
 
-		// Extract date and map from filename (format: auto-YYYYMMDD-HHMMSS-mapname.dem(.bz2)?)
-		if (preg_match('/^auto-(\d{4})(\d{2})(\d{2})-(\d{2})(\d{2})(\d{2})-(.+)\.dem(\.bz2)?$/', $demo, $matches)) {
-			$year = $matches[1];
-			$month = $matches[2];
-			$day = $matches[3];
-			$hour = $matches[4];
-			$minute = $matches[5];
-			$second = $matches[6];
-			$map = $matches[7];
+    // Searchable haystack combining map name and date
+    $searchKey = strtolower($map . ' ' . $date);
 
-			$date = "$day.$month.$year @ $hour:$minute";
-			$timestamp = mktime((int)$hour, (int)$minute, (int)$second, (int)$month, (int)$day, (int)$year);
-		} else {
-			// Fallback for unexpected filename format
-			$date = date('d.m.Y @ H:i', $demoInfo['mtime']);
-			$timestamp = (int)$demoInfo['mtime'];
-			$map = 'Unknown';
-		}
+    echo "<div class='demo-row' data-search='" . DemoSecurity::escapeHtml($searchKey) . "'>";
+        echo "<div class='demo-col demo-col-map'>";
+            echo "<div class='demo-icon'><i class='fas fa-file-video'></i></div>";
+            echo "<span class='demo-map-name' title='" . DemoSecurity::escapeHtml($map) . "'>" . DemoSecurity::escapeHtml($map) . "</span>";
+        echo "</div>";
+        echo "<div class='demo-col demo-col-date'>";
+            echo "<div class='demo-date' data-system-date='" . DemoSecurity::escapeHtml($date) . "' data-timestamp='" . (int)$timestamp . "'><span class='system-time'>" . DemoSecurity::escapeHtml($date) . "</span><span class='local-time hidden'></span></div>";
+        echo "</div>";
+        echo "<div class='demo-col demo-col-size'>";
+            echo "<span class='size-badge'>" . DemoSecurity::escapeHtml($demoSize) . "</span>";
+        echo "</div>";
+        echo "<div class='demo-col demo-col-action'>";
+            echo "<a href='https://demos.nide.gg/" . urlencode($validatedServer) . "/demos/" . urlencode($demo) . "'><div class='button'><i class='fas fa-download'></i> Download</div></a>";
+        echo "</div>";
+    echo "</div>";
+}
 
-		$demoSize = fileSizeConvert($demoSizeInBytes, 'M') . ' MiB';
-
-		// Add compression indicator if file is compressed
-		if (strpos($demo, '.bz2') !== false) {
-			$demoSize .= ' (bz2)';
-		}
-
-		echo "<tr>";
-			echo "<td>" . DemoSecurity::escapeHtml($map) . "</td>";
-			echo "<td><div class='demo-date' data-system-date='" . DemoSecurity::escapeHtml($date) . "' data-timestamp='" . (int)$timestamp . "'><span class='system-time'>" . DemoSecurity::escapeHtml($date) . "</span><span class='local-time hidden'></span></div></td>";
-			echo "<td>" . DemoSecurity::escapeHtml($demoSize) . "</td>";
-			echo "<td style='text-align: center !important'><a href='https://demos.nide.gg/" . urlencode($validatedServer) . "/demos/" . urlencode($demo) . "'><div class='button'>Download</div></a></td>";
-		echo "</tr>";
-	}
-
-	if (empty($demos)) {
-		echo "<tr><td colspan='4' style='text-align: center; padding: 20px;'>No demos available in: " . htmlspecialchars($demoPath) . "</td></tr>";
-	}
-	?>
-	</tbody>
-</table>
+if (empty($demos)) {
+    echo "<div class='empty-state'>";
+        echo "<i class='fas fa-folder-open'></i>";
+        echo "<h3>No demos available in this server</h3>";
+    echo "</div>";
+}
+?>
+</div>
+<div class="empty-state" id="noSearchResults" style="display:none;">
+    <i class="fas fa-search"></i>
+    <h3>No demos match your search</h3>
+</div>

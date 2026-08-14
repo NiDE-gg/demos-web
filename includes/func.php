@@ -3,6 +3,11 @@
  * Enhanced security functions for Demo system
  */
 
+// Demo filenames are timestamped by the game servers in this timezone;
+// without this, PHP falls back to its default (often UTC), which skews
+// mktime() in pages/server.php and the "local time" conversion in header.php.
+date_default_timezone_set('Europe/Paris');
+
 function siteURL()
 {
     // Better HTTPS detection including proxy headers

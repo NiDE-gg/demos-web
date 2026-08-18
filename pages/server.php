@@ -30,9 +30,14 @@ if ($handle = opendir($demoPath)) {
         if ($file != "." && $file != ".." && is_file($demoPath . $file)) {
             // Validate filename pattern for demo files
             if (DemoSecurity::sanitizeFilename($file)) {
+                $mtime = filemtime($demoPath . $file);
+                if ($mtime === false) {
+                    continue; // Skip if modification time cannot be determined
+                }
+
                 $demos[] = [
                     'filename' => $file,
-                    'mtime' => filemtime($demoPath . $file)
+                    'mtime' => $mtime
                 ];
             }
         }
@@ -41,7 +46,7 @@ if ($handle = opendir($demoPath)) {
 }
 
 // Sort by modification time (newest first)
-usort($demos, function($a, $b) {
+usort($demos, function ($a, $b) {
     return $b['mtime'] - $a['mtime'];
 });
 

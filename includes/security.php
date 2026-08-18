@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Security functions for Demo system
  * Provides input validation and sanitization
@@ -6,7 +7,11 @@
 
 class DemoSecurity
 {
-    // Whitelist of allowed servers
+    /**
+     * Whitelist of allowed servers
+     *
+     * @var array<string, array{name: string, path: string}>
+     */
     private static $allowedServers = [
         'css_ze' => [
             'name' => 'CS:S Zombie Escape',
@@ -20,8 +25,10 @@ class DemoSecurity
 
     /**
      * Validate server parameter against whitelist
+     *
+     * @return string|false
      */
-    public static function validateServer($server)
+    public static function validateServer(string $server)
     {
         if (empty($server)) {
             return false;
@@ -37,8 +44,10 @@ class DemoSecurity
 
     /**
      * Sanitize filename to prevent path traversal and command injection
+     *
+     * @return string|false
      */
-    public static function sanitizeFilename($filename)
+    public static function sanitizeFilename(string $filename)
     {
         if (empty($filename)) {
             return false;
@@ -61,23 +70,27 @@ class DemoSecurity
     /**
      * Escape HTML output to prevent XSS
      */
-    public static function escapeHtml($string)
+    public static function escapeHtml(string $string): string
     {
         return htmlspecialchars($string, ENT_QUOTES | ENT_HTML5, 'UTF-8');
     }
 
     /**
      * Get allowed servers list
+     *
+     * @return array<string, array{name: string, path: string}>
      */
-    public static function getAllowedServers()
+    public static function getAllowedServers(): array
     {
         return self::$allowedServers;
     }
 
     /**
      * Validate file path exists and is within allowed directory
+     *
+     * @return string|false
      */
-    public static function validateFilePath($server, $filename, $demoPath)
+    public static function validateFilePath(string $server, string $filename, string $demoPath)
     {
         $validatedServer = self::validateServer($server);
         $validatedFilename = self::sanitizeFilename($filename);
@@ -100,7 +113,7 @@ class DemoSecurity
     /**
      * Log security events
      */
-    public static function logSecurityEvent($event, $details = '')
+    public static function logSecurityEvent(string $event, string $details = ''): void
     {
         $logEntry = date('Y-m-d H:i:s') . " - SECURITY: $event";
         if ($details) {
@@ -111,4 +124,3 @@ class DemoSecurity
         error_log($logEntry, 3, dirname(__DIR__) . '/security.log');
     }
 }
-?>

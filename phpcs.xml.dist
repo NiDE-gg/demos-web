@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<ruleset name="demos-web">
+    <description>Coding standard for demos-web</description>
+
+    <arg name="colors"/>
+    <arg value="p"/>
+
+    <file>.</file>
+
+    <exclude-pattern>vendor/*</exclude-pattern>
+    <exclude-pattern>css_ze/*</exclude-pattern>
+    <exclude-pattern>css_zr/*</exclude-pattern>
+    <exclude-pattern>data/*</exclude-pattern>
+    <exclude-pattern>*.log</exclude-pattern>
+    <!-- Pure HTML template fragment, no PHP to lint -->
+    <exclude-pattern>pages/demos.php</exclude-pattern>
+
+    <rule ref="PSR12">
+        <!-- func.php / downloads.php / page-builder.php intentionally mix
+             declarations with bootstrap side effects; restructuring them is
+             out of scope for adding lint/CI. -->
+        <exclude name="PSR1.Files.SideEffects.FoundWithSymbols"/>
+        <!-- Legacy global-namespace classes; a namespace migration is out
+             of scope here. -->
+        <exclude name="PSR1.Classes.ClassDeclaration.MissingNamespace"/>
+        <!-- A handful of lines (CSP header, regexes) are unavoidably long. -->
+        <exclude name="Generic.Files.LineLength"/>
+    </rule>
+</ruleset>

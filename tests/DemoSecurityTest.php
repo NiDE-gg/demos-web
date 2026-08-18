@@ -3,6 +3,7 @@
 namespace Tests;
 
 use DemoSecurity;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 require_once __DIR__ . '/../includes/security.php';
@@ -51,9 +52,7 @@ class DemoSecurityTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider validServerProvider
-     */
+    #[DataProvider('validServerProvider')]
     public function testValidateServerAcceptsWhitelistedServers(string $server): void
     {
         $this->assertSame($server, DemoSecurity::validateServer($server));
@@ -73,9 +72,7 @@ class DemoSecurityTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider invalidServerProvider
-     */
+    #[DataProvider('invalidServerProvider')]
     public function testValidateServerRejectsInvalidInput(string $server): void
     {
         $this->assertFalse(DemoSecurity::validateServer($server));
@@ -94,9 +91,7 @@ class DemoSecurityTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider validFilenameProvider
-     */
+    #[DataProvider('validFilenameProvider')]
     public function testSanitizeFilenameAcceptsValidNames(string $filename): void
     {
         $this->assertSame($filename, DemoSecurity::sanitizeFilename($filename));
@@ -118,9 +113,7 @@ class DemoSecurityTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider invalidFilenameProvider
-     */
+    #[DataProvider('invalidFilenameProvider')]
     public function testSanitizeFilenameRejectsInvalidNames(string $filename): void
     {
         $this->assertFalse(DemoSecurity::sanitizeFilename($filename));

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * SQLite-backed download counter for demo files.
  * Self-cleans: rows for files no longer on disk are pruned whenever
@@ -96,4 +97,3 @@ class DownloadCounter
         return array_map('intval', $stmt->fetchAll(PDO::FETCH_KEY_PAIR));
     }
 }
-?>

@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.5"
+          tools: composer
+          coverage: none
+
+      - name: Install dependencies
+        run: composer install --no-interaction --no-progress --prefer-dist
+
+      - name: Syntax check (php -l)
+        run: |
+          find . -name "*.php" -not -path "./vendor/*" -not -path "./css_ze/*" -not -path "./css_zr/*" -print0 \
+            | xargs -0 -n1 php -l
+
+      - name: Code style (phpcs / PSR-12)
+        run: vendor/bin/phpcs
+
+      - name: Static analysis (PHPStan)
+        run: vendor/bin/phpstan analyse --configuration=phpstan.neon.dist --no-progress --error-format=github --memory-limit=1G
+
+      - name: Unit tests (PHPUnit)
+        run: vendor/bin/phpunit

@@ -1,4 +1,5 @@
 <?php
+
 include_once('../includes/func.php');
 include_once('../includes/security.php');
 include_once('../includes/downloads.php');
@@ -27,4 +28,3 @@ DownloadCounter::increment($validatedServer, $validatedFilename);
 
 header('Location: https://demos.nide.gg/' . rawurlencode($validatedServer) . '/demos/' . rawurlencode($validatedFilename), true, 302);
 exit;
-?>

@@ -8,3 +8,8 @@ config.private.php
 secrets.php
 *secret*.php
 *password*.php
+
+# Dev tooling
+/vendor/
+/.phpunit.cache/
+.phpunit.result.cache

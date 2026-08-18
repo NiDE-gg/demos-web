@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Enhanced security functions for Demo system
  */
@@ -8,7 +9,7 @@
 // mktime() in pages/server.php and the "local time" conversion in header.php.
 date_default_timezone_set('Europe/Paris');
 
-function siteURL()
+function siteURL(): string
 {
     // Better HTTPS detection including proxy headers
     $isHttps = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ||
@@ -26,10 +27,8 @@ function siteURL()
 }
 define('SITE_URL', siteURL());
 
-function fileSizeConvert($bytes, $to, $decimal_places = 1)
+function fileSizeConvert(int $bytes, string $to, int $decimal_places = 1): string
 {
-    $bytes = (int) $bytes; // Ensure numeric input
-
     $formulas = array(
         'K' => number_format($bytes / 1024, $decimal_places),
         'M' => number_format($bytes / 1048576, $decimal_places),
@@ -41,7 +40,7 @@ function fileSizeConvert($bytes, $to, $decimal_places = 1)
 /**
  * Set security headers
  */
-function setSecurityHeaders()
+function setSecurityHeaders(): void
 {
     // Prevent XSS attacks
     header('X-Content-Type-Options: nosniff');
@@ -62,4 +61,3 @@ function setSecurityHeaders()
 
 // Apply security headers
 setSecurityHeaders();
-?>

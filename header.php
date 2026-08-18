@@ -39,7 +39,7 @@
         $allowedServers = DemoSecurity::getAllowedServers();
         $colorClasses = ['card-orange', 'card-blue'];
         $colorIndex = 0;
-        foreach ($allowedServers as $serverId => $serverInfo): ?>
+        foreach ($allowedServers as $serverId => $serverInfo) : ?>
             <a href="#" class="server-card <?php echo $colorClasses[$colorIndex % count($colorClasses)]; ?> changeServ" data-server="<?php echo DemoSecurity::escapeHtml($serverId); ?>">
                 <div class="card-content">
                     <div class="server-badge">
@@ -52,7 +52,8 @@
                     </div>
                 </div>
             </a>
-        <?php $colorIndex++; endforeach; ?>
+            <?php $colorIndex++;
+        endforeach; ?>
     </div>
 
     <div class="info-footer">
@@ -218,7 +219,7 @@ $(document).ready(function() {
         container.classList.remove('show');
         container.innerHTML = '<div style="text-align: center; padding: 50px; color: #888;">Loading demos...</div>';
 
-        req.open("POST", "<?php echo DemoSecurity::escapeHtml(SITE_URL ?? ''); ?>pages/server.php");
+        req.open("POST", "<?php echo DemoSecurity::escapeHtml(SITE_URL); ?>pages/server.php");
         req.send(formData);
     });
 

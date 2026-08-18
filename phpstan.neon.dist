@@ -1,0 +1,18 @@
+parameters:
+    level: 7
+    bootstrapFiles:
+        - phpstan-bootstrap.php
+    paths:
+        - index.php
+        - init.php
+        - header.php
+        - footer.php
+        - includes
+        - pages
+        - style
+        - tests
+    excludePaths:
+        - vendor/*
+        - css_ze/*
+        - css_zr/*
+        - data/*

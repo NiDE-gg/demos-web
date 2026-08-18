@@ -35,6 +35,18 @@ php -S 127.0.0.1:8000 -t .
 
 Then open `http://127.0.0.1:8000/`.
 
+## Tests & linting
+
+```bash
+composer install
+composer test       # PHPUnit
+composer lint        # PHP_CodeSniffer (PSR-12)
+composer lint:fix    # auto-fix style issues
+composer stan         # PHPStan static analysis (level 7)
+```
+
+CI (`.github/workflows/ci.yml`) runs a PHP syntax check, `phpcs`, PHPStan, and the PHPUnit suite on every push/PR. Minimum supported PHP version is 8.5.
+
 ## Demo filename convention
 
 Accepted formats:

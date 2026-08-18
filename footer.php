@@ -5,6 +5,7 @@
         </div>
         <div class="flex flex-fd:column text:right">
             <span><i class="fas fa-code"></i> Coded by <a href="https://nide.gg/profile/1-ingame/" target="_blank" rel="noopener" title="inGame">inGame</a> &amp; <a href="https://nide.gg/profile/2122-rushaway/" target="_blank" rel="noopener" title=".Rushaway">.Rushaway</a></span>
+            <span><i class="fab fa-github"></i> Open source on <a href="https://github.com/NiDE-gg/demos-web" target="_blank" rel="noopener" title="GitHub repository">GitHub</a></span>
         </div>
     </div>
 </footer>

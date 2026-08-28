@@ -853,31 +853,6 @@ footer a:hover {
   }
 }
 
-/* Message styles */
-.ipsMessage {
-    border-radius: 12px;
-    position: relative;
-    margin: 20px auto;
-    color: var(--text-main);
-    border: 1px solid var(--border-subtle);
-    background: var(--bg-card);
-    padding: 16px 20px;
-    backdrop-filter: blur(20px);
-    font-size: 14px;
-    max-width: 1200px;
-    width: 100%;
-}
-
-.ipsMessage_info {
-    border-color: rgba(0, 176, 255, 0.3);
-    background: rgba(0, 176, 255, 0.1);
-}
-
-.ipsMessage i {
-    margin-right: 8px;
-    color: var(--accent-blue);
-}
-
 /* Empty state styling */
 .server .empty-state {
     text-align: center;

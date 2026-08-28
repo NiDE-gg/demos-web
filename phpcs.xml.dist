@@ -12,8 +12,6 @@
     <exclude-pattern>css_zr/*</exclude-pattern>
     <exclude-pattern>data/*</exclude-pattern>
     <exclude-pattern>*.log</exclude-pattern>
-    <!-- Pure HTML template fragment, no PHP to lint -->
-    <exclude-pattern>pages/demos.php</exclude-pattern>
 
     <rule ref="PSR12">
         <!-- func.php / downloads.php / page-builder.php intentionally mix

@@ -161,9 +161,6 @@ $(document).ready(function() {
         searchInput.focus();
     });
 
-    // CSRF protection - generate token
-    var csrfToken = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-
     $(".changeServ").click(function(event) {
         event.preventDefault();
 
@@ -187,7 +184,6 @@ $(document).ready(function() {
 
         var formData = new FormData();
         formData.append('server', serverId);
-        formData.append('csrf_token', csrfToken);
 
         req.onreadystatechange = function() {
             if (req.readyState == 4) {

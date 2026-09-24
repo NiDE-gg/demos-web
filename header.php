@@ -12,24 +12,38 @@
 <body>
 
 <nav>
+    <input type="checkbox" id="navToggle" class="nav-toggle-input">
     <a href="https://demos.nide.gg/" class="nav-brand" title="Demo Archive NiDE.GG">
         <img src="https://motd.nide.gg/css_ze/imgs/nide_test_nobg_back.png" alt="NiDE" class="brand-icon">
-        NiDE - Demos Archive
+        <span class="nav-brand-text">
+            <span class="nav-brand-name">NiDE</span>
+            <span class="nav-brand-tag">Demos Archive</span>
+        </span>
     </a>
-    <div class="nav-links">
-        <a href="https://nide.gg/forums/" title="Go back to Forums">FORUM</a>
-        <a href="https://discord.nide.gg/" target="_blank" rel="noopener" title="Discord">DISCORD</a>
-        <a href="https://steamcommunity.com/groups/nide_css/" target="_blank" rel="noopener" title="Steam group">STEAM</a>
-        <a href="https://stats.nide.gg/" target="_blank" rel="noopener" title="HLStatsX">STATS</a>
-        <a href="https://demos.nide.gg/" class="active" title="Demos Archive">DEMOS</a>
-        <a href="https://bans.nide.gg/" target="_blank" rel="noopener" title="Sourcebans">BANS</a>
-        <a href="https://ebans.nide.gg/" target="_blank" rel="noopener" title="EntWatch bans">EBANS</a>
-        <a href="https://kbans.nide.gg/" target="_blank" rel="noopener" title="KbRestrict bans">KBANS</a>
+    <label for="navToggle" class="nav-toggle" aria-label="Open menu">
+        <i class="fas fa-bars"></i>
+    </label>
+    <div class="nav-menu">
+        <div class="nav-links">
+            <a href="https://nide.gg/forums/" title="Go back to Forums">Forum</a>
+            <a href="https://demos.nide.gg/" class="active" title="Demos Archive">Demos</a>
+            <a href="https://stats.nide.gg/" target="_blank" rel="noopener" title="HLStatsX">Stats</a>
+            <a href="https://bans.nide.gg/" target="_blank" rel="noopener" title="Sourcebans">Bans</a>
+            <a href="https://steamcommunity.com/groups/nide_css/" target="_blank" rel="noopener" title="Steam group">Steam</a>
+        </div>
+        <a href="https://discord.nide.gg/" target="_blank" rel="noopener" class="nav-cta" title="Discord">
+            <i class="fab fa-discord"></i>
+            Discord
+        </a>
     </div>
 </nav>
 
 <div class="container">
     <header>
+        <span class="header-eyebrow">
+            <span class="live-dot"></span>
+            CS:Source Community
+        </span>
         <h1>Server Demos</h1>
         <p class="subtitle">Select a server to browse match recordings</p>
     </header>
@@ -47,9 +61,9 @@
                         CS:Source
                     </div>
                     <div class="server-name"><?php echo DemoSecurity::escapeHtml($serverInfo['name']); ?></div>
-                    <div class="card-footer">
-                        <span class="action-text">Browse Demos <span class="arrow-icon">→</span></span>
-                    </div>
+                </div>
+                <div class="card-footer">
+                    <span class="action-text">Browse demos <span class="arrow-icon">→</span></span>
                 </div>
             </a>
             <?php $colorIndex++;
@@ -58,8 +72,27 @@
 
     <div class="info-footer">
         <span class="info-text">
-            Demos are automatically deleted after <b>7 days</b>.
+            <i class="fas fa-clock"></i>
+            Demos are automatically deleted after <strong>7 days</strong>.
         </span>
+    </div>
+
+    <div class="how-it-works">
+        <div class="step-card">
+            <span class="step-number">01</span>
+            <span class="step-title">Choose a server</span>
+            <p class="step-text">Pick Zombie Escape or Zombie Revival above.</p>
+        </div>
+        <div class="step-card">
+            <span class="step-number">02</span>
+            <span class="step-title">Browse recordings</span>
+            <p class="step-text">Search recent matches by map or date.</p>
+        </div>
+        <div class="step-card">
+            <span class="step-number">03</span>
+            <span class="step-title">Download &amp; watch</span>
+            <p class="step-text">Grab the .dem file and replay it in-game.</p>
+        </div>
     </div>
 
     <div class="table-toolbar hidden" id="tableToolbar">

@@ -63,8 +63,8 @@
     <div class="server-grid">
         <?php
         $tileIcons = [
-            'css_ze' => '<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/>',
-            'css_zr' => '<path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>',
+            'css_ze' => '<path d="M3 10l1 2h6"/><path d="M12 9a2 2 0 0 0 -2 2v3c0 1.1 .9 2 2 2h7a2 2 0 0 0 2 -2c0 -3.31 -3.13 -5 -7 -5h-2"/><path d="M13 9l0 -3"/><path d="M5 6l15 0"/><path d="M15 9.1v3.9h5.5"/><path d="M15 19l0 -3"/><path d="M19 19l-8 0"/>',
+            'css_zr' => '<circle cx="12" cy="11" r="7"/><path d="M9 9l-2 2m2 0l-2 -2"/><path d="M15 11l0 .01"/><path d="M9 15q1.5 1.5 3 0q1.5 1.5 3 0"/><path d="M8 18l-1 2M16 18l1 2"/>',
         ];
         $defaultIcon = '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M10 9v6l5-3z"/>';
         $tileClasses = ['server-tile--orange', 'server-tile--blue'];

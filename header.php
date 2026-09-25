@@ -11,64 +11,100 @@
 </head>
 <body>
 
-<nav>
-    <a href="https://demos.nide.gg/" class="nav-brand" title="Demo Archive NiDE.GG">
-        <img src="https://motd.nide.gg/css_ze/imgs/nide_test_nobg_back.png" alt="NiDE" class="brand-icon">
-        NiDE - Demos Archive
-    </a>
-    <div class="nav-links">
-        <a href="https://nide.gg/forums/" title="Go back to Forums">FORUM</a>
-        <a href="https://discord.nide.gg/" target="_blank" rel="noopener" title="Discord">DISCORD</a>
-        <a href="https://steamcommunity.com/groups/nide_css/" target="_blank" rel="noopener" title="Steam group">STEAM</a>
-        <a href="https://stats.nide.gg/" target="_blank" rel="noopener" title="HLStatsX">STATS</a>
-        <a href="https://demos.nide.gg/" class="active" title="Demos Archive">DEMOS</a>
-        <a href="https://bans.nide.gg/" target="_blank" rel="noopener" title="Sourcebans">BANS</a>
-        <a href="https://ebans.nide.gg/" target="_blank" rel="noopener" title="EntWatch bans">EBANS</a>
-        <a href="https://kbans.nide.gg/" target="_blank" rel="noopener" title="KbRestrict bans">KBANS</a>
+<nav class="site-nav">
+    <div class="nav-inner">
+        <input type="checkbox" id="navToggle" class="nav-toggle-input">
+        <a href="https://demos.nide.gg/" class="nav-brand" title="Demo Archive NiDE.GG">
+            <img src="https://motd.nide.gg/css_ze/imgs/nide_test_nobg_back.png" alt="NiDE" class="brand-icon">
+            <span class="nav-brand__text">
+                <span class="nav-brand__name">NiDE</span>
+                <span class="nav-brand__tag">Demos Archive</span>
+            </span>
+        </a>
+        <label for="navToggle" class="nav-toggle" aria-label="Toggle navigation">
+            <svg class="icon-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+            <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </label>
+        <div class="nav-menu">
+            <div class="nav-links">
+                <a href="https://nide.gg/forums/" title="Go back to Forums"><i class="fas fa-comments"></i> Forum</a>
+                <a href="https://demos.nide.gg/" class="active" title="Demos Archive"><i class="fas fa-film"></i> Demos</a>
+                <a href="https://stats.nide.gg/" target="_blank" rel="noopener" title="HLStatsX"><i class="fas fa-chart-line"></i> Stats</a>
+                <a href="https://bans.nide.gg/" target="_blank" rel="noopener" title="Sourcebans"><i class="fas fa-ban"></i> Bans</a>
+                <a href="https://ebans.nide.gg/" target="_blank" rel="noopener" title="EntWatch bans"><i class="fas fa-hand-paper"></i> EBans</a>
+                <a href="https://kbans.nide.gg/" target="_blank" rel="noopener" title="KbRestrict bans"><i class="fas fa-user-slash"></i> KBans</a>
+            </div>
+            <div class="nav-actions">
+                <a href="https://discord.nide.gg/" target="_blank" rel="noopener" class="nav-pill" title="Discord"><i class="fab fa-discord"></i> Discord</a>
+                <a href="https://nide.gg/" class="nav-pill" title="NiDE Community">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+                    Back to NiDE.GG
+                </a>
+            </div>
+        </div>
     </div>
 </nav>
 
 <div class="container">
-    <header>
-        <h1>Server Demos</h1>
-        <p class="subtitle">Select a server to browse match recordings</p>
+    <header class="page-head">
+        <div>
+            <span class="page-head__eyebrow">CS:Source recordings</span>
+            <h1 class="page-head__title">Server Demos</h1>
+            <p class="page-head__sub">Pick a server to browse and download its match recordings, newest first.</p>
+        </div>
+        <div class="page-head__actions">
+            <span class="info-pill">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                Demos are deleted after&nbsp;<strong>7 days</strong>
+            </span>
+        </div>
     </header>
 
     <div class="server-grid">
         <?php
-        $allowedServers = DemoSecurity::getAllowedServers();
-        $colorClasses = ['card-orange', 'card-blue'];
-        $colorIndex = 0;
-        foreach ($allowedServers as $serverId => $serverInfo) : ?>
-            <a href="#" class="server-card <?php echo $colorClasses[$colorIndex % count($colorClasses)]; ?> changeServ" data-server="<?php echo DemoSecurity::escapeHtml($serverId); ?>">
-                <div class="card-content">
-                    <div class="server-badge">
-                        <div class="live-dot"></div>
-                        CS:Source
-                    </div>
-                    <div class="server-name"><?php echo DemoSecurity::escapeHtml($serverInfo['name']); ?></div>
-                    <div class="card-footer">
-                        <span class="action-text">Browse Demos <span class="arrow-icon">→</span></span>
-                    </div>
+        $tileIcons = [
+            'css_ze' => '<path d="M3 10l1 2h6"/><path d="M12 9a2 2 0 0 0 -2 2v3c0 1.1 .9 2 2 2h7a2 2 0 0 0 2 -2c0 -3.31 -3.13 -5 -7 -5h-2"/><path d="M13 9l0 -3"/><path d="M5 6l15 0"/><path d="M15 9.1v3.9h5.5"/><path d="M15 19l0 -3"/><path d="M19 19l-8 0"/>',
+            'css_zr' => '<circle cx="12" cy="11" r="7"/><path d="M9 9l-2 2m2 0l-2 -2"/><path d="M15 11l0 .01"/><path d="M9 15q1.5 1.5 3 0q1.5 1.5 3 0"/><path d="M8 18l-1 2M16 18l1 2"/>',
+        ];
+        $defaultIcon = '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M10 9v6l5-3z"/>';
+        $tileClasses = ['server-tile--orange', 'server-tile--blue'];
+        $tileIndex = 0;
+        foreach (DemoSecurity::getAllowedServers() as $serverId => $serverInfo) : ?>
+            <a href="#" class="server-tile <?php echo $tileClasses[$tileIndex % count($tileClasses)]; ?> changeServ" data-server="<?php echo DemoSecurity::escapeHtml($serverId); ?>">
+                <div class="server-tile__top">
+                    <span class="server-tile__chip">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><?php echo $tileIcons[$serverId] ?? $defaultIcon; ?></svg>
+                    </span>
+                    <span class="badge">CS:Source</span>
+                </div>
+                <div>
+                    <div class="server-tile__name"><?php echo DemoSecurity::escapeHtml($serverInfo['name']); ?></div>
+                    <div class="server-tile__id"><?php echo DemoSecurity::escapeHtml($serverId); ?></div>
+                </div>
+                <div class="server-tile__foot">
+                    Browse recordings
+                    <span class="server-tile__arrow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                    </span>
                 </div>
             </a>
-            <?php $colorIndex++;
+            <?php $tileIndex++;
         endforeach; ?>
     </div>
 
-    <div class="info-footer">
-        <span class="info-text">
-            Demos are automatically deleted after <b>7 days</b>.
-        </span>
-    </div>
-
-    <div class="table-toolbar hidden" id="tableToolbar">
-        <div class="search-box">
-            <i class="fas fa-search"></i>
-            <input type="text" id="demoSearch" placeholder="Search by map or date..." autocomplete="off">
-            <button type="button" class="search-clear" id="searchClear" title="Clear search"><i class="fas fa-times"></i></button>
+    <div class="list-head hidden" id="tableToolbar">
+        <div>
+            <h2 class="section-title" id="listTitle">Recordings</h2>
+            <p class="section-sub">Server time (Paris), with your local time when it differs.</p>
         </div>
-        <div class="demo-count" id="demoCount"></div>
+        <div class="list-tools">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="demoSearch" placeholder="Search by map or date..." autocomplete="off" aria-label="Search demos">
+                <button type="button" class="search-clear" id="searchClear" title="Clear search" aria-label="Clear search"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="demo-count" id="demoCount"></div>
+        </div>
     </div>
 
     <div id="server" class="demos-container demo-list"></div>
@@ -172,6 +208,7 @@ $(document).ready(function() {
 
         var container = document.getElementById("server");
         var serverId = $(this).data('server');
+        $('#listTitle').text($(this).find('.server-tile__name').text());
 
         // Validate server ID on client side
         var allowedServers = ['css_ze', 'css_zr'];
@@ -213,7 +250,7 @@ $(document).ready(function() {
         toolbar.classList.add('hidden');
         container.classList.add('loading');
         container.classList.remove('show');
-        container.innerHTML = '<div style="text-align: center; padding: 50px; color: #888;">Loading demos...</div>';
+        container.innerHTML = '<div class="demo-loading"><span class="demo-loading__spinner"></span>Loading demos...</div>';
 
         req.open("POST", "<?php echo DemoSecurity::escapeHtml(SITE_URL); ?>pages/server.php");
         req.send(formData);

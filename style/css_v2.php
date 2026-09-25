@@ -1071,6 +1071,11 @@ a:hover {
   font-size: 0.78rem;
 }
 
+.site-footer__version a {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  color: var(--accent-text);
+}
+
 .site-footer__bottom .site-footer__author {
   color: var(--accent-text);
   font-weight: 600;

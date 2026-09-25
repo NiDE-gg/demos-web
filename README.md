@@ -47,6 +47,18 @@ composer stan         # PHPStan static analysis (level 7)
 
 CI (`.github/workflows/ci.yml`) runs a PHP syntax check, `phpcs`, PHPStan, and the PHPUnit suite on every push/PR. Minimum supported PHP version is 8.5.
 
+## Running version in the footer
+
+The footer displays the commit the site currently runs, linked to the matching commit on GitHub.
+`getAppVersion()` (`includes/version.php`) resolves it from, in order:
+
+1. the `APP_COMMIT` (or `GIT_COMMIT`) environment variable,
+2. a `VERSION` file at the project root containing the commit hash,
+3. the local `.git` directory (loose refs, packed refs, detached HEAD and worktrees).
+
+If a deployment ships without `.git`, write the hash at deploy time, e.g.
+`git rev-parse HEAD > VERSION`. When nothing resolves, the version line is simply omitted.
+
 ## Demo filename convention
 
 Accepted formats:

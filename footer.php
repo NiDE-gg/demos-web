@@ -1,3 +1,8 @@
+<?php
+$appVersion = function_exists('getAppVersion') ? getAppVersion() : null;
+$appVersionFull = $appVersion === null ? '' : htmlspecialchars($appVersion['full'], ENT_QUOTES, 'UTF-8');
+$appVersionShort = $appVersion === null ? '' : htmlspecialchars($appVersion['short'], ENT_QUOTES, 'UTF-8');
+?>
 <footer class="site-footer">
     <div class="site-footer__inner">
         <div class="site-footer__grid">
@@ -25,7 +30,11 @@
         </div>
         <div class="site-footer__bottom">
             <p>&copy; <?php echo date('Y'); ?> <a href="https://nide.gg/" target="_blank" rel="noopener" class="site-footer__author" title="NiDE Community">NIDE.GG</a> &middot; This is why NiDE is better</p>
-            <p>Coded by <a href="https://nide.gg/profile/1-ingame/" target="_blank" rel="noopener" title="inGame">inGame</a> &amp; <a href="https://nide.gg/profile/2122-rushaway/" target="_blank" rel="noopener" title=".Rushaway">.Rushaway</a> &middot; <a href="https://github.com/NiDE-gg/demos-web" target="_blank" rel="noopener" title="GitHub repository">Open source on GitHub</a></p>
+            <p>Coded by <a href="https://nide.gg/profile/1-ingame/" target="_blank" rel="noopener" title="inGame">inGame</a> &amp; <a href="https://nide.gg/profile/2122-rushaway/" target="_blank" rel="noopener" title=".Rushaway">.Rushaway</a> &middot; <a href="https://github.com/NiDE-gg/demos-web" target="_blank" rel="noopener" title="GitHub repository">Open source on GitHub</a>
+<?php if ($appVersion !== null) : ?>
+                &middot; <span class="site-footer__version">Version <a href="https://github.com/NiDE-gg/demos-web/commit/<?php echo $appVersionFull; ?>" target="_blank" rel="noopener" title="Running commit <?php echo $appVersionFull; ?>"><?php echo $appVersionShort; ?></a></span>
+<?php endif; ?>
+            </p>
         </div>
     </div>
 </footer>

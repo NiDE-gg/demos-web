@@ -4,8 +4,8 @@ include_once('../includes/func.php');
 include_once('../includes/security.php');
 include_once('../includes/downloads.php');
 
-$server = $_GET['server'] ?? '';
-$file = $_GET['file'] ?? '';
+$server = DemoSecurity::stringParam($_GET['server'] ?? '');
+$file = DemoSecurity::stringParam($_GET['file'] ?? '');
 
 $validatedServer = DemoSecurity::validateServer($server);
 $validatedFilename = DemoSecurity::sanitizeFilename($file);

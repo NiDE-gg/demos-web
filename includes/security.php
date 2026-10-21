@@ -24,6 +24,16 @@ class DemoSecurity
     ];
 
     /**
+     * Read a request parameter as a string.
+     * Arrays (e.g. ?server[]=x) become '' instead of reaching the typed
+     * validators below, where they would raise an uncaught TypeError.
+     */
+    public static function stringParam(mixed $value): string
+    {
+        return is_string($value) ? $value : '';
+    }
+
+    /**
      * Validate server parameter against whitelist
      *
      * @return string|false

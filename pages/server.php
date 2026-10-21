@@ -4,7 +4,7 @@ include_once('../includes/security.php');
 include_once('../includes/downloads.php');
 
 // Validate and sanitize server input
-$server = $_POST['server'] ?? '';
+$server = DemoSecurity::stringParam($_POST['server'] ?? '');
 $validatedServer = DemoSecurity::validateServer($server);
 
 if (!$validatedServer) {

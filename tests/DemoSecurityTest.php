@@ -127,6 +127,17 @@ class DemoSecurityTest extends TestCase
         $this->assertSame('auto-20240115-153045-mapname.dem', $result);
     }
 
+    public function testStringParamKeepsStrings(): void
+    {
+        $this->assertSame('css_ze', DemoSecurity::stringParam('css_ze'));
+    }
+
+    public function testStringParamRejectsArrays(): void
+    {
+        $this->assertSame('', DemoSecurity::stringParam(['css_ze']));
+        $this->assertFalse(DemoSecurity::validateServer(DemoSecurity::stringParam(['css_ze'])));
+    }
+
     public function testEscapeHtmlEscapesSpecialCharacters(): void
     {
         $result = DemoSecurity::escapeHtml('<script>alert("xss")</script>');

@@ -45,7 +45,7 @@ composer lint:fix    # auto-fix style issues
 composer stan         # PHPStan static analysis (level 7)
 ```
 
-CI (`.github/workflows/ci.yml`) runs a PHP syntax check, `phpcs`, PHPStan, and the PHPUnit suite on every push/PR. Minimum supported PHP version is 8.5.
+CI (`.github/workflows/ci.yml`) runs a PHP syntax check, `phpcs`, PHPStan, and the PHPUnit suite on every push/PR. Minimum supported PHP version is 8.5.12 (fixes CVE-2026-109618 and CVE-2026-109619, see below).
 
 ## Running version in the footer
 
@@ -86,5 +86,19 @@ Useful parameters for demos:
 - Filenames are validated before disk access.
 - Security events are logged to `Demo/security.log`.
 - Local secrets are ignored through `.gitignore` (`.env*`, `config.local.php`, `*secret*.php`, etc.).
+- Request parameters that arrive as arrays are treated as empty, so no input can trigger a fatal error.
+
+### PHP runtime (CVE-2026-109618 / CVE-2026-109619)
+
+The server must run PHP 8.5.12 or later: older versions allow unauthenticated
+remote code execution before any application code runs, so nothing in this
+repository can mitigate it ([php.net advisory](https://www.php.net/archive/2026.php#2026-10-21-5)).
+If the update has to wait, the advisory lists stopgaps for `php.ini` or the FPM
+pool (not `.user.ini` / `ini_set()`), then restart every worker:
+
+- `session.upload_progress.enabled = 0`
+- `fatal_error_backtraces = 0`
+- `post_max_size = 8M` (the site takes no uploads)
+- `memory_limit = -1` via `php_admin_value`, with a container/cgroup memory limit
 
 See also: `OPEN_SOURCE.md`.

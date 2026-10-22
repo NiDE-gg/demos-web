@@ -16,3 +16,8 @@ secrets.php
 
 # Commit hash written at deploy time (see README, "Deployment")
 /VERSION
+
+# Runtime data written by the app; only the access rule is versioned
+/data/*
+!/data/.htaccess
+/security.log

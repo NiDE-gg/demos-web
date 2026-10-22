@@ -131,6 +131,12 @@ class DemoSecurity
         }
         $logEntry .= " - IP: " . ($_SERVER['REMOTE_ADDR'] ?? 'unknown') . "\n";
 
-        error_log($logEntry, 3, dirname(__DIR__) . '/security.log');
+        // data/ is denied to the web (data/.htaccess); the web root is not.
+        $dataDir = dirname(__DIR__) . '/data';
+        if (!is_dir($dataDir)) {
+            mkdir($dataDir, 0770, true);
+        }
+
+        error_log($logEntry, 3, $dataDir . '/security.log');
     }
 }

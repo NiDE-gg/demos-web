@@ -5,8 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NiDE - Demos Archive</title>
 <link rel="Shortcut Icon" href="favicon.ico" />
-<link href="style/css_v2.php" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="https://code.jquery.com/jquery-4.0.0.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="style/css_v2.css?v=<?php echo (int) filemtime(__DIR__ . '/style/css_v2.css'); ?>" rel="stylesheet" type="text/css" />
 <script src="https://kit.fontawesome.com/f29912deb4.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -111,7 +113,7 @@
 </div>
 
 <script>
-$(document).ready(function() {
+document.addEventListener('DOMContentLoaded', function() {
     function formatLocalDate(unixTimestampSeconds) {
         var date = new Date(unixTimestampSeconds * 1000);
         var parts = new Intl.DateTimeFormat('en-GB', {
@@ -197,18 +199,22 @@ $(document).ready(function() {
         searchInput.focus();
     });
 
-    $(".changeServ").click(function(event) {
+    var serverCards = document.querySelectorAll('.changeServ');
+
+    function onServerClick(event) {
         event.preventDefault();
 
         // Remove active class from all server cards
-        $('.changeServ').removeClass('active-card');
+        serverCards.forEach(function(card) {
+            card.classList.remove('active-card');
+        });
 
         // Add active class to clicked card
-        $(this).addClass('active-card');
+        this.classList.add('active-card');
 
         var container = document.getElementById("server");
-        var serverId = $(this).data('server');
-        $('#listTitle').text($(this).find('.server-tile__name').text());
+        var serverId = this.getAttribute('data-server');
+        document.getElementById('listTitle').textContent = this.querySelector('.server-tile__name').textContent;
 
         // Validate server ID on client side
         var allowedServers = ['css_ze', 'css_zr'];
@@ -254,12 +260,16 @@ $(document).ready(function() {
 
         req.open("POST", "<?php echo DemoSecurity::escapeHtml(SITE_URL); ?>pages/server.php");
         req.send(formData);
+    }
+
+    serverCards.forEach(function(card) {
+        card.addEventListener('click', onServerClick);
     });
 
     // Auto-select first server on page load if desired
     // Uncomment the next 3 lines if you want auto-selection
-    // if ($(".changeServ").length > 0) {
-    //     $(".changeServ").first().click();
+    // if (serverCards.length > 0) {
+    //     serverCards[0].click();
     // }
 });
 </script>

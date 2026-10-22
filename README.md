@@ -23,7 +23,7 @@ This project is linked to [srcdslab/autofastdl](https://github.com/srcdslab/auto
 - `includes/security.php` - server/file validation, HTML escaping, security logging.
 - `pages/server.php` - listing endpoint (`POST server`).
 - `css_ze/demos`, `css_zr/demos` - demo directories.
-- `style/` - frontend assets.
+- `style/` - frontend assets (static stylesheet, served directly by the web server).
 
 ## Local development
 

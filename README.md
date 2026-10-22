@@ -102,7 +102,7 @@ Useful parameters for demos:
 
 - Only whitelisted server keys are accepted.
 - Filenames are validated before disk access.
-- Security events are logged to `Demo/security.log`.
+- Security events (with the client IP) are logged to `data/security.log`. `data/` also holds the download counters and is denied to the web by `data/.htaccess` (Apache).
 - Local secrets are ignored through `.gitignore` (`.env*`, `config.local.php`, `*secret*.php`, etc.).
 - Request parameters that arrive as arrays are treated as empty, so no input can trigger a fatal error.
 

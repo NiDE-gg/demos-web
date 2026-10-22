@@ -13,3 +13,6 @@ secrets.php
 /vendor/
 /.phpunit.cache/
 .phpunit.result.cache
+
+# Commit hash written at deploy time (see README, "Deployment")
+/VERSION

@@ -59,6 +59,24 @@ The footer displays the commit the site currently runs, linked to the matching c
 If a deployment ships without `.git`, write the hash at deploy time, e.g.
 `git rev-parse HEAD > VERSION`. When nothing resolves, the version line is simply omitted.
 
+## Deployment (Plesk Git)
+
+Production is deployed by the Plesk Git extension (automatic mode, branch `main`). Plesk copies the
+files without `.git`, and its post-deployment shell has neither `php` nor `git` on the `PATH`, so:
+
+- **No `composer install` step.** The site has no runtime Composer dependencies (`require` only
+  pins the PHP version) and never loads `vendor/autoload.php`; Composer is only used by CI.
+- **`VERSION` is written by a post-deployment action** that reads `refs/heads/main` (loose or
+  packed) from the bare repository Plesk keeps in `<vhost>/git/demos-web.git`, using shell
+  built-ins only:
+
+```sh
+for g in "$HOME/git/demos-web.git" ../git/demos-web.git /git/demos-web.git; do [ -f "$g/HEAD" ] && break; done; h=; [ -f "$g/refs/heads/main" ] && read -r h < "$g/refs/heads/main"; if [ -z "$h" ] && [ -f "$g/packed-refs" ]; then while read -r a b; do [ "$b" = refs/heads/main ] && h=$a; done < "$g/packed-refs"; fi; if [ -n "$h" ]; then echo "$h" > VERSION && echo "VERSION $h written in $(pwd)"; else echo "VERSION not written: no refs/heads/main in $g"; fi
+```
+
+Keep it on a single line: the candidate paths cover both a regular and a chrooted shell, and the
+echoed message in the deployment log shows which commit was written and where.
+
 ## Demo filename convention
 
 Accepted formats:

@@ -9,7 +9,6 @@ parameters:
         - footer.php
         - includes
         - pages
-        - style
         - tests
     excludePaths:
         - vendor/*

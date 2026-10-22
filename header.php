@@ -5,7 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NiDE - Demos Archive</title>
 <link rel="Shortcut Icon" href="favicon.ico" />
-<link href="style/css_v2.php" rel="stylesheet" type="text/css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="style/css_v2.css?v=<?php echo (int) filemtime(__DIR__ . '/style/css_v2.css'); ?>" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="https://code.jquery.com/jquery-4.0.0.min.js"></script>
 <script src="https://kit.fontawesome.com/f29912deb4.js" crossorigin="anonymous"></script>
 </head>

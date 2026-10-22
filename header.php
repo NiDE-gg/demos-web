@@ -17,11 +17,11 @@
     <div class="nav-inner">
         <input type="checkbox" id="navToggle" class="nav-toggle-input">
         <a href="https://demos.nide.gg/" class="nav-brand" title="Demo Archive NiDE.GG">
-            <img src="https://motd.nide.gg/css_ze/imgs/nide_test_nobg_back.png" alt="NiDE" class="brand-icon">
-            <span class="nav-brand__text">
-                <span class="nav-brand__name">NiDE</span>
-                <span class="nav-brand__tag">Demos Archive</span>
-            </span>
+            <?php
+            // Santa-hat banner in December and January, the regular one the rest of the year.
+            $brandBanner = in_array((int) date('n'), [12, 1], true) ? 'demos_archive_winter.png' : 'demos_archive_2024.png';
+            ?>
+            <img src="style/img/<?php echo $brandBanner; ?>" alt="NiDE - Demos Archive" class="brand-banner" width="600" height="100">
         </a>
         <label for="navToggle" class="nav-toggle" aria-label="Toggle navigation">
             <svg class="icon-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>

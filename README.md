@@ -61,21 +61,21 @@ If a deployment ships without `.git`, write the hash at deploy time, e.g.
 
 ## Deployment (Plesk Git)
 
-Production is deployed by the Plesk Git extension (automatic mode, branch `main`). Plesk copies the
-files without `.git`, and its post-deployment shell has neither `php` nor `git` on the `PATH`, so:
+Production is deployed by the Plesk Git extension (automatic mode, branch `main`) into
+`<vhost>/demos.nide.gg`. Plesk copies the files without `.git` and keeps its own bare repository
+in `<vhost>/git/demos-web` (no `.git` suffix). Post-deployment actions run in the deployment
+directory as the subscription user (`$HOME` is the vhost), with `git` but no `php` on the `PATH`.
 
 - **No `composer install` step.** The site has no runtime Composer dependencies (`require` only
   pins the PHP version) and never loads `vendor/autoload.php`; Composer is only used by CI.
-- **`VERSION` is written by a post-deployment action** that reads `refs/heads/main` (loose or
-  packed) from the bare repository Plesk keeps in `<vhost>/git/demos-web.git`, using shell
-  built-ins only:
+- **`VERSION` is written by this post-deployment action**, so the footer shows the deployed commit:
 
 ```sh
-for g in "$HOME/git/demos-web.git" ../git/demos-web.git /git/demos-web.git; do [ -f "$g/HEAD" ] && break; done; h=; [ -f "$g/refs/heads/main" ] && read -r h < "$g/refs/heads/main"; if [ -z "$h" ] && [ -f "$g/packed-refs" ]; then while read -r a b; do [ "$b" = refs/heads/main ] && h=$a; done < "$g/packed-refs"; fi; if [ -n "$h" ]; then echo "$h" > VERSION && echo "VERSION $h written in $(pwd)"; else echo "VERSION not written: no refs/heads/main in $g"; fi
+h=$(git -C "$HOME/git/demos-web" rev-parse --verify "main^{commit}") && echo "$h" > VERSION
 ```
 
-Keep it on a single line: the candidate paths cover both a regular and a chrooted shell, and the
-echoed message in the deployment log shows which commit was written and where.
+Plesk only shows an action's output when it fails, so a successful run prints nothing; if the
+repository cannot be read, the deployment step fails with git's error and `VERSION` is left as is.
 
 ## Demo filename convention
 

@@ -22,6 +22,16 @@ class DownloadCounter
         }
 
         $pdo = new PDO('sqlite:' . $dataDir . '/downloads.sqlite');
+        self::useConnection($pdo);
+
+        return $pdo;
+    }
+
+    /**
+     * Use the given connection instead of data/downloads.sqlite (tests).
+     */
+    public static function useConnection(PDO $pdo): void
+    {
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $pdo->exec('PRAGMA journal_mode = WAL');
         $pdo->exec('PRAGMA synchronous = NORMAL');
@@ -35,13 +45,14 @@ class DownloadCounter
         );
 
         self::$pdo = $pdo;
-        return $pdo;
     }
 
     /**
      * Remove counters for files that no longer exist for this server.
      * Call this whenever the current file list for a server is known
      * (e.g. during directory scan), so cleanup rides along for free.
+     * Only issues a DELETE when stale rows exist, so a plain page view
+     * stays a read and never takes the SQLite write lock.
      *
      * @param string $server
      * @param string[] $existingFilenames
@@ -50,17 +61,19 @@ class DownloadCounter
     {
         $pdo = self::db();
 
-        if (empty($existingFilenames)) {
-            $stmt = $pdo->prepare('DELETE FROM downloads WHERE server = :server');
-            $stmt->execute([':server' => $server]);
+        $stmt = $pdo->prepare('SELECT filename FROM downloads WHERE server = :server');
+        $stmt->execute([':server' => $server]);
+        $stale = array_values(array_diff($stmt->fetchAll(PDO::FETCH_COLUMN), $existingFilenames));
+
+        if ($stale === []) {
             return;
         }
 
-        $placeholders = implode(',', array_fill(0, count($existingFilenames), '?'));
+        $placeholders = implode(',', array_fill(0, count($stale), '?'));
         $stmt = $pdo->prepare(
-            "DELETE FROM downloads WHERE server = ? AND filename NOT IN ($placeholders)"
+            "DELETE FROM downloads WHERE server = ? AND filename IN ($placeholders)"
         );
-        $stmt->execute(array_merge([$server], $existingFilenames));
+        $stmt->execute(array_merge([$server], $stale));
     }
 
     /**

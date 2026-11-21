@@ -17,6 +17,12 @@
   --blue-soft: rgba(59, 130, 246, 0.12);
   --blue-line: rgba(59, 130, 246, 0.38);
 
+  --green-a: #22c55e;
+  --green-b: #16a34a;
+  --green-text: #a7f3c4;
+  --green-soft: rgba(34, 197, 94, 0.12);
+  --green-line: rgba(34, 197, 94, 0.38);
+
   --danger-text: #fca5a5;
 
   --bg: #05070e;
@@ -479,7 +485,7 @@ a:hover {
 --------------------------------------------------------------------------*/
 .server-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 14px;
 }
 
@@ -491,6 +497,7 @@ a:hover {
   --tile-line: var(--accent-line);
   --tile-soft: var(--accent-soft);
   --tile-text: var(--accent-text);
+  --tile-on: var(--on-accent);
   color: inherit;
 }
 
@@ -502,6 +509,18 @@ a:hover {
   --tile-line: var(--blue-line);
   --tile-soft: var(--blue-soft);
   --tile-text: var(--blue-text);
+  --tile-on: #fff;
+}
+
+.server-tile--green,
+.server-tile--green:hover {
+  --tile-a: var(--green-a);
+  --tile-b: var(--green-b);
+  --tile-glow: rgba(34, 197, 94, 0.16);
+  --tile-line: var(--green-line);
+  --tile-soft: var(--green-soft);
+  --tile-text: var(--green-text);
+  --tile-on: #fff;
 }
 
 .server-tile {
@@ -546,12 +565,8 @@ a:hover {
   height: 46px;
   border-radius: var(--r-lg);
   background: linear-gradient(135deg, var(--tile-a), var(--tile-b));
-  color: #fff;
+  color: var(--tile-on);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
-}
-
-.server-tile:not(.server-tile--blue) .server-tile__chip {
-  color: var(--on-accent);
 }
 
 .server-tile__chip svg {
@@ -613,12 +628,7 @@ a:hover {
   transform: translateX(3px);
   border-color: transparent;
   background: linear-gradient(135deg, var(--tile-a), var(--tile-b));
-  color: #fff;
-}
-
-.server-tile:not(.server-tile--blue):hover .server-tile__arrow,
-.server-tile:not(.server-tile--blue).active-card .server-tile__arrow {
-  color: var(--on-accent);
+  color: var(--tile-on);
 }
 
 .server-tile.active-card .server-tile__foot {

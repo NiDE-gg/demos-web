@@ -67,9 +67,10 @@
         $tileIcons = [
             'css_ze' => '<path d="M3 10l1 2h6"/><path d="M12 9a2 2 0 0 0 -2 2v3c0 1.1 .9 2 2 2h7a2 2 0 0 0 2 -2c0 -3.31 -3.13 -5 -7 -5h-2"/><path d="M13 9l0 -3"/><path d="M5 6l15 0"/><path d="M15 9.1v3.9h5.5"/><path d="M15 19l0 -3"/><path d="M19 19l-8 0"/>',
             'css_zr' => '<circle cx="12" cy="11" r="7"/><path d="M9 9l-2 2m2 0l-2 -2"/><path d="M15 11l0 .01"/><path d="M9 15q1.5 1.5 3 0q1.5 1.5 3 0"/><path d="M8 18l-1 2M16 18l1 2"/>',
+            'css_dust2' => '<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="1"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/>',
         ];
         $defaultIcon = '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M10 9v6l5-3z"/>';
-        $tileClasses = ['server-tile--orange', 'server-tile--blue'];
+        $tileClasses = ['server-tile--orange', 'server-tile--blue', 'server-tile--green'];
         $tileIndex = 0;
         foreach (DemoSecurity::getAllowedServers() as $serverId => $serverInfo) : ?>
             <a href="#" class="server-tile <?php echo $tileClasses[$tileIndex % count($tileClasses)]; ?> changeServ" data-server="<?php echo DemoSecurity::escapeHtml($serverId); ?>">
@@ -217,7 +218,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('listTitle').textContent = this.querySelector('.server-tile__name').textContent;
 
         // Validate server ID on client side
-        var allowedServers = ['css_ze', 'css_zr'];
+        var allowedServers = ['css_ze', 'css_zr', 'css_dust2'];
         if (allowedServers.indexOf(serverId) === -1) {
             container.innerHTML = '<div class="error">Invalid server selected</div>';
             return;

@@ -14,4 +14,5 @@ parameters:
         - vendor/*
         - css_ze/*
         - css_zr/*
+        - css_dust2/*
         - data/*

@@ -20,6 +20,10 @@ class DemoSecurity
         'css_zr' => [
             'name' => 'CS:S Zombie Revival',
             'path' => 'css_zr'
+        ],
+        'css_dust2' => [
+            'name' => 'CS:S Dust2 24/7',
+            'path' => 'css_dust2'
         ]
     ];
 

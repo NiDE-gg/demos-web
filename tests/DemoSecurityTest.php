@@ -204,4 +204,52 @@ class DemoSecurityTest extends TestCase
 
         $this->assertFalse($result);
     }
+
+    public function testDaysLabel(): void
+    {
+        $this->assertSame('1 day', DemoSecurity::daysLabel(1));
+        $this->assertSame('4 days', DemoSecurity::daysLabel(4));
+    }
+
+    public function testEveryServerHasAPositiveRetention(): void
+    {
+        foreach (DemoSecurity::getAllowedServers() as $serverId => $server) {
+            $this->assertGreaterThan(0, $server['retention_days'], $serverId);
+        }
+    }
+
+    /**
+     * @return array<string, array{list<int>, string, bool}>
+     */
+    public static function retentionProvider(): array
+    {
+        return [
+            'mixed' => [[7, 7, 4, 4, 4], '4 to 7 days', true],
+            'uniform' => [[7, 7], '7 days', false],
+            'single day' => [[1], '1 day', false],
+            'none' => [[], '', false],
+        ];
+    }
+
+    /**
+     * @param list<int> $days
+     */
+    #[DataProvider('retentionProvider')]
+    public function testRetentionRange(array $days, string $label, bool $varies): void
+    {
+        $property = new \ReflectionProperty(DemoSecurity::class, 'allowedServers');
+        $original = $property->getValue();
+        $servers = [];
+        foreach ($days as $i => $d) {
+            $servers['s' . $i] = ['name' => 'S' . $i, 'path' => 's' . $i, 'retention_days' => $d];
+        }
+
+        try {
+            $property->setValue(null, $servers);
+            $this->assertSame($label, DemoSecurity::retentionRangeLabel());
+            $this->assertSame($varies, DemoSecurity::retentionVaries());
+        } finally {
+            $property->setValue(null, $original);
+        }
+    }
 }

@@ -57,7 +57,7 @@
         <div class="page-head__actions">
             <span class="info-pill">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
-                Demos are deleted after&nbsp;<strong>7 days</strong>
+                Demos are deleted after&nbsp;<strong id="retentionDays"><?php echo DemoSecurity::escapeHtml(DemoSecurity::retentionRangeLabel()); ?></strong>
             </span>
         </div>
     </header>
@@ -75,7 +75,7 @@
         $tileClasses = ['server-tile--orange', 'server-tile--blue', 'server-tile--green', 'server-tile--red', 'server-tile--purple'];
         $tileIndex = 0;
         foreach (DemoSecurity::getAllowedServers() as $serverId => $serverInfo) : ?>
-            <a href="#" class="server-tile <?php echo $tileClasses[$tileIndex % count($tileClasses)]; ?> changeServ" data-server="<?php echo DemoSecurity::escapeHtml($serverId); ?>">
+            <a href="#" class="server-tile <?php echo $tileClasses[$tileIndex % count($tileClasses)]; ?> changeServ" data-server="<?php echo DemoSecurity::escapeHtml($serverId); ?>" data-retention="<?php echo DemoSecurity::escapeHtml(DemoSecurity::daysLabel($serverInfo['retention_days'])); ?>">
                 <div class="server-tile__top">
                     <span class="server-tile__chip">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><?php echo $tileIcons[$serverId] ?? $defaultIcon; ?></svg>
@@ -217,9 +217,10 @@ document.addEventListener('DOMContentLoaded', function() {
         var container = document.getElementById("server");
         var serverId = this.getAttribute('data-server');
         document.getElementById('listTitle').textContent = this.querySelector('.server-tile__name').textContent;
+        document.getElementById('retentionDays').textContent = this.getAttribute('data-retention');
 
         // Validate server ID on client side
-        var allowedServers = ['css_ze', 'css_zr', 'css_dust2', 'css_dm', 'css_gg'];
+        var allowedServers = <?php echo json_encode(array_keys(DemoSecurity::getAllowedServers()), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
         if (allowedServers.indexOf(serverId) === -1) {
             container.innerHTML = '<div class="error">Invalid server selected</div>';
             return;

@@ -588,13 +588,6 @@ a:hover {
   color: var(--text-1);
 }
 
-.server-tile__id {
-  margin-top: 4px;
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  color: var(--text-4);
-}
-
 .server-tile__foot {
   display: flex;
   align-items: center;

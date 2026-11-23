@@ -82,7 +82,6 @@
                 </div>
                 <div>
                     <div class="server-tile__name"><?php echo DemoSecurity::escapeHtml($serverInfo['name']); ?></div>
-                    <div class="server-tile__id"><?php echo DemoSecurity::escapeHtml($serverId); ?></div>
                 </div>
                 <div class="server-tile__foot">
                     Browse recordings

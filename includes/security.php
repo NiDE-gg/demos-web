@@ -8,30 +8,39 @@
 class DemoSecurity
 {
     /**
-     * Whitelist of allowed servers
+     * Whitelist of allowed servers.
      *
-     * @var array<string, array{name: string, path: string}>
+     * retention_days must match autoremove.remote.days in the server's
+     * demos_css_<x> autofastdl config.json (on the game host): that container
+     * deletes the uploaded demos, this value is only what the site displays.
+     *
+     * @var array<string, array{name: string, path: string, retention_days: int}>
      */
     private static $allowedServers = [
         'css_ze' => [
             'name' => 'CS:S Zombie Escape',
-            'path' => 'css_ze'
+            'path' => 'css_ze',
+            'retention_days' => 7
         ],
         'css_zr' => [
             'name' => 'CS:S Zombie Revival',
-            'path' => 'css_zr'
+            'path' => 'css_zr',
+            'retention_days' => 7
         ],
         'css_dust2' => [
             'name' => 'CS:S Dust2 24/7',
-            'path' => 'css_dust2'
+            'path' => 'css_dust2',
+            'retention_days' => 4
         ],
         'css_dm' => [
             'name' => 'CS:S Dust2 Deathmatch',
-            'path' => 'css_dm'
+            'path' => 'css_dm',
+            'retention_days' => 4
         ],
         'css_gg' => [
             'name' => 'CS:S GunGame',
-            'path' => 'css_gg'
+            'path' => 'css_gg',
+            'retention_days' => 4
         ]
     ];
 
@@ -100,11 +109,44 @@ class DemoSecurity
     /**
      * Get allowed servers list
      *
-     * @return array<string, array{name: string, path: string}>
+     * @return array<string, array{name: string, path: string, retention_days: int}>
      */
     public static function getAllowedServers(): array
     {
         return self::$allowedServers;
+    }
+
+    /**
+     * "1 day" / "N days".
+     */
+    public static function daysLabel(int $days): string
+    {
+        return $days . ($days === 1 ? ' day' : ' days');
+    }
+
+    /**
+     * Retention of every server at once: "7 days" when they all match,
+     * "4 to 7 days" otherwise.
+     */
+    public static function retentionRangeLabel(): string
+    {
+        $days = array_column(self::$allowedServers, 'retention_days');
+        if ($days === []) {
+            return '';
+        }
+
+        $min = min($days);
+        $max = max($days);
+
+        return $min === $max ? self::daysLabel($min) : $min . ' to ' . self::daysLabel($max);
+    }
+
+    /**
+     * Whether the servers keep their demos for different durations.
+     */
+    public static function retentionVaries(): bool
+    {
+        return count(array_unique(array_column(self::$allowedServers, 'retention_days'))) > 1;
     }
 
     /**

@@ -8,7 +8,7 @@ $appVersionShort = $appVersion === null ? '' : htmlspecialchars($appVersion['sho
         <div class="site-footer__grid">
             <div class="site-footer__about">
                 <span class="site-footer__brand">NiDE Demos Archive</span>
-                <p>Match recordings from the NiDE CS:Source servers, uploaded automatically and kept for 7 days.</p>
+                <p>Match recordings from the NiDE CS:Source servers, uploaded automatically and kept for <?php echo DemoSecurity::escapeHtml(DemoSecurity::retentionRangeLabel()); ?><?php echo DemoSecurity::retentionVaries() ? ' depending on the server' : ''; ?>.</p>
             </div>
             <div>
                 <h3 class="site-footer__heading">Community</h3>

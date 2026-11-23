@@ -51,7 +51,7 @@ usort($demos, function ($a, $b) {
 });
 
 // Self-cleaning: drop counters for demos that no longer exist on disk
-// (the external recorder script prunes files every 7 days).
+// (each server's autofastdl container prunes them after its retention_days).
 DownloadCounter::prune($validatedServer, array_column($demos, 'filename'));
 $downloadCounts = DownloadCounter::getCounts($validatedServer);
 ?>

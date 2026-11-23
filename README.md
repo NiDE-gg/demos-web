@@ -96,6 +96,13 @@ Useful parameters for demos:
 
 - `threads`, `debug`, `docker`
 - `autoremove::*` (local/remote retention, autoclean, priority)
+
+### Retention per server
+
+Each server has its own demos container (`demos_css_<key>`), so each one deletes its demos after its own
+`autoremove::remote::days`. The site cannot read those configs: the matching value is `retention_days` in
+`DemoSecurity::$allowedServers` (`includes/security.php`). It feeds the "Demos are deleted after" pill (range
+on load, the selected server's value after a click) and the footer. Change both together.
 - `autoremove::after_upload` (remove local file after upload)
 
 ## Security

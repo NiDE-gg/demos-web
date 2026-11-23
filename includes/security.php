@@ -24,6 +24,14 @@ class DemoSecurity
         'css_dust2' => [
             'name' => 'CS:S Dust2 24/7',
             'path' => 'css_dust2'
+        ],
+        'css_dm' => [
+            'name' => 'CS:S Dust2 Deathmatch',
+            'path' => 'css_dm'
+        ],
+        'css_gg' => [
+            'name' => 'CS:S GunGame',
+            'path' => 'css_gg'
         ]
     ];
 

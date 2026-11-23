@@ -23,6 +23,18 @@
   --green-soft: rgba(34, 197, 94, 0.12);
   --green-line: rgba(34, 197, 94, 0.38);
 
+  --red-a: #ef4444;
+  --red-b: #dc2626;
+  --red-text: #fecaca;
+  --red-soft: rgba(239, 68, 68, 0.12);
+  --red-line: rgba(239, 68, 68, 0.38);
+
+  --purple-a: #a855f7;
+  --purple-b: #9333ea;
+  --purple-text: #e9d5ff;
+  --purple-soft: rgba(168, 85, 247, 0.12);
+  --purple-line: rgba(168, 85, 247, 0.38);
+
   --danger-text: #fca5a5;
 
   --bg: #05070e;
@@ -520,6 +532,28 @@ a:hover {
   --tile-line: var(--green-line);
   --tile-soft: var(--green-soft);
   --tile-text: var(--green-text);
+  --tile-on: #fff;
+}
+
+.server-tile--red,
+.server-tile--red:hover {
+  --tile-a: var(--red-a);
+  --tile-b: var(--red-b);
+  --tile-glow: rgba(239, 68, 68, 0.16);
+  --tile-line: var(--red-line);
+  --tile-soft: var(--red-soft);
+  --tile-text: var(--red-text);
+  --tile-on: #fff;
+}
+
+.server-tile--purple,
+.server-tile--purple:hover {
+  --tile-a: var(--purple-a);
+  --tile-b: var(--purple-b);
+  --tile-glow: rgba(168, 85, 247, 0.16);
+  --tile-line: var(--purple-line);
+  --tile-soft: var(--purple-soft);
+  --tile-text: var(--purple-text);
   --tile-on: #fff;
 }
 

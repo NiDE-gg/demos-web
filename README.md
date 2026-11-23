@@ -6,13 +6,13 @@ This project is linked to [srcdslab/autofastdl](https://github.com/srcdslab/auto
 
 ## Role in the architecture
 
-- `autofastdl` populates demo directories (`css_ze/demos`, `css_zr/demos`, `css_dust2/demos`).
+- `autofastdl` populates demo directories (`css_ze/demos`, `css_zr/demos`, `css_dust2/demos`, `css_dm/demos`, `css_gg/demos`).
 - `Demo` provides the web interface to browse and download demos.
 - Download links target `https://demos.nide.gg/...`.
 
 ## Features
 
-- Lists demo archives for whitelisted servers (`css_ze`, `css_zr`, `css_dust2`).
+- Lists demo archives for whitelisted servers (`css_ze`, `css_zr`, `css_dust2`, `css_dm`, `css_gg`).
 - Parses filenames to display map, start date, and size.
 - Validates/sanitizes user input through `DemoSecurity`.
 
@@ -22,7 +22,7 @@ This project is linked to [srcdslab/autofastdl](https://github.com/srcdslab/auto
 - `init.php` - include/constants bootstrap.
 - `includes/security.php` - server/file validation, HTML escaping, security logging.
 - `pages/server.php` - listing endpoint (`POST server`).
-- `css_ze/demos`, `css_zr/demos`, `css_dust2/demos` - demo directories.
+- `css_ze/demos`, `css_zr/demos`, `css_dust2/demos`, `css_dm/demos`, `css_gg/demos` - demo directories.
 - `style/` - frontend assets (static stylesheet, served directly by the web server).
 
 ## Local development

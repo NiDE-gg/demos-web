@@ -25,7 +25,7 @@ jobs:
 
       - name: Syntax check (php -l)
         run: |
-          find . -name "*.php" -not -path "./vendor/*" -not -path "./css_ze/*" -not -path "./css_zr/*" -not -path "./css_dust2/*" -print0 \
+          find . -name "*.php" -not -path "./vendor/*" -not -path "./css_ze/*" -not -path "./css_zr/*" -not -path "./css_dust2/*" -not -path "./css_dm/*" -not -path "./css_gg/*" -print0 \
             | xargs -0 -n1 php -l
 
       - name: Code style (phpcs / PSR-12)

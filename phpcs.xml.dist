@@ -11,6 +11,8 @@
     <exclude-pattern>css_ze/*</exclude-pattern>
     <exclude-pattern>css_zr/*</exclude-pattern>
     <exclude-pattern>css_dust2/*</exclude-pattern>
+    <exclude-pattern>css_dm/*</exclude-pattern>
+    <exclude-pattern>css_gg/*</exclude-pattern>
     <exclude-pattern>data/*</exclude-pattern>
     <exclude-pattern>*.log</exclude-pattern>
 

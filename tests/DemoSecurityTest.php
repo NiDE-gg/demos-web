@@ -50,6 +50,8 @@ class DemoSecurityTest extends TestCase
             'css_ze' => ['css_ze'],
             'css_zr' => ['css_zr'],
             'css_dust2' => ['css_dust2'],
+            'css_dm' => ['css_dm'],
+            'css_gg' => ['css_gg'],
         ];
     }
 
@@ -153,6 +155,8 @@ class DemoSecurityTest extends TestCase
         $this->assertArrayHasKey('css_ze', $servers);
         $this->assertArrayHasKey('css_zr', $servers);
         $this->assertArrayHasKey('css_dust2', $servers);
+        $this->assertArrayHasKey('css_dm', $servers);
+        $this->assertArrayHasKey('css_gg', $servers);
     }
 
     public function testValidateFilePathAcceptsExistingWhitelistedFile(): void
